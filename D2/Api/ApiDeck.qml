@@ -10,6 +10,7 @@ Item {
   AppProperty { path: "app.traktor.decks." + (deckId+1) + ".is_loaded";         onValueChanged: deckLoadedTimer.start() }
   AppProperty { path: "app.traktor.decks." + (deckId+1) + ".is_loaded_signal";  onValueChanged: deckLoadedTimer.start() }
 
+
   AppProperty { id: propTitle;         path: "app.traktor.decks." + (deckId+1) + ".content.title" }
   AppProperty { id: propArtist;        path: "app.traktor.decks." + (deckId+1) + ".content.artist" }
   AppProperty { id: propAlbum;         path: "app.traktor.decks." + (deckId+1) + ".content.album" }
@@ -25,6 +26,12 @@ Item {
   AppProperty { id: propBpm;           path: "app.traktor.decks." + (deckId+1) + ".tempo.base_bpm" }
   AppProperty { id: propTempo;         path: "app.traktor.decks." + (deckId+1) + ".tempo.tempo_for_display";      onValueChanged: tempoChangedTimer.restart() }
   AppProperty { id: propResultingKey;  path: "app.traktor.decks." + (deckId+1) + ".track.key.resulting.precise";  onValueChanged: keyChangedTimer.restart() }
+
+  AppProperty { id: propVolume;  path: "app.traktor.mixer.channels." + (deckId+1) + ".volume" }
+  AppProperty { id: propPlay;  path: "app.traktor.decks." + (deckId+1) + ".play" }
+
+//64:  AppProperty { id: propertyCover;              path: "app.traktor.decks." + deckId + ".content.cover_md5" }
+
 
   AppProperty {
     id: propIsPlaying
@@ -69,6 +76,8 @@ Item {
         tempo:        propTempo.value,
         resultingKey: propResultingKey.value,
         isSynced:     propIsSynced.value,
+        volume:       propVolume.value,
+        play:         propPlay.value,
       })
     }
   }
@@ -100,6 +109,8 @@ Item {
     onTriggered: {
       ApiClient.send("updateDeck/" + deckLetter, {
         elapsedTime: propElapsedTime.value,
+        volume:      propVolume.value,
+        play:        propPlay.value,
       })
     }
   }
